@@ -15,7 +15,7 @@ class FollowedUserPostView extends Model
 
     public function scopeFollowedPost(Builder $query, int $userId): Builder
     {
-        return $query->whereHas('user', function ($query) use ($userId){
+        return $query->whereHas('user', function ($query) use ($userId) {
             return $query->followedByUser($userId)->orWhere('id', $userId);
         })->with('user');
     }

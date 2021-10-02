@@ -10,8 +10,8 @@ class FilesHelper
 {
     public static function save(string $path, File $file): string
     {
-        $path = $path . '/' . Str::snake($file->hashName());
-        Storage::put($path, $file);
-        return $path;
+        Storage::disk('public')->put($path, $file);
+
+        return  $path . '/' . $file->hashName();
     }
 }

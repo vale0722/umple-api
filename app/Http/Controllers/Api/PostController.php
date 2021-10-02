@@ -13,8 +13,7 @@ class PostController extends Controller
 {
     public function index(): JsonResponse
     {
-        $posts = FollowedUserPostView::followedPost(12)->orderByDesc('date')->get();
-        Log::info(asset('storage/posts/tk_n_c0_y_ql_rhdzdsh_rho1xk_g_f4_e3_ru_ko_ik_t_g_x3p_sq5.png'));
+        $posts = FollowedUserPostView::followedPost(1)->orderByDesc('date')->get();
         return response()->json(compact('posts'));
     }
 
