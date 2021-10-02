@@ -9,7 +9,7 @@ class StoreOrUpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo_url' => 'sometimes|bail|required_without:description',
+            'photo' => 'mimes:jpeg,png|max:1014',
             'content' => 'sometimes|string',
         ];
     }

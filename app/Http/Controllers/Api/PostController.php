@@ -7,13 +7,14 @@ use App\Http\Requests\Api\StoreOrUpdatePostRequest;
 use App\Models\FollowedUserPostView;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
     public function index(): JsonResponse
     {
-        $posts = FollowedUserPostView::followedPost(12)->get();
-
+        $posts = FollowedUserPostView::followedPost(12)->orderByDesc('date')->get();
+        Log::info(asset('storage/posts/tk_n_c0_y_ql_rhdzdsh_rho1xk_g_f4_e3_ru_ko_ik_t_g_x3p_sq5.png'));
         return response()->json(compact('posts'));
     }
 
@@ -24,12 +25,6 @@ class PostController extends Controller
             'message' => trans('posts.store_successful')
         ]);
     }
-
-    public function show(Post $post): JsonResponse
-    {
-        return response()->json(compact('post'));
-    }
-
 
     public function update(StoreOrUpdatePostRequest $request, Post $post): JsonResponse
     {

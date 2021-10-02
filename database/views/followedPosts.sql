@@ -6,7 +6,7 @@ SELECT posts.id,
        users.name                              as user_name,
        users.email                             as user_email,
        users.photo_uri                         as user_profile,
-       users.created_at                        as date,
+       posts.created_at                        as date,
        (SELECT count(*)
         FROM interactions
         WHERE interactions.post_id = posts.id) as likes,
