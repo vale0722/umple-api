@@ -19,10 +19,11 @@ class CreateInteractionsTable extends Migration
             $table->enum('type', InteractionTypes::getValues());
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('post_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('post_id')->references('id')->on('posts')->cascadeOnDelete();
         });
     }
 

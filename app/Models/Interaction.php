@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Constants\InteractionTypes;
 use App\Models\Concerns\PostRelationship;
 use App\Models\Concerns\Repositories\InteractionRepository;
 use App\Models\Concerns\UserRelationship;

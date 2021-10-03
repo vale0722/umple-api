@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FollowerController;
 use App\Http\Controllers\Api\InteractionController;
 use App\Http\Controllers\Api\PostController;
 use Illuminate\Http\Request;
@@ -10,6 +11,14 @@ Route::name('api.posts.')
         Route::resource('posts', PostController::class)->except('show');
         Route::patch('posts/{post}/interactions', [InteractionController::class, 'interaction'])->name('interaction');
         Route::patch('posts/{post}/comments', [InteractionController::class, 'comment'])->name('comment');
+    });
+
+Route::name('api.users.')
+    ->group(function () {
+        Route::get('users/followed', [FollowerController::class, 'indexFollowed'])->name('followed');
+        Route::get('users/not-followed', [FollowerController::class, 'indexNotFollowed'])->name('not-followed');
+        Route::get('users/followers', [FollowerController::class, 'indexFollowers'])->name('followers');
+        Route::patch('users/followed/{user}', [FollowerController::class, 'store'])->name('followed.store');
     });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
