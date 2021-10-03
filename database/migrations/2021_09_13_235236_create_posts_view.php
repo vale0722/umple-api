@@ -14,6 +14,6 @@ class CreatePostsView extends Migration
 
     public function down(): void
     {
-        DB::statement("DROP VIEW followed_posts_view");
+        DB::statement("DROP VIEW IF EXISTS `followed_posts_view`");
     }
 }

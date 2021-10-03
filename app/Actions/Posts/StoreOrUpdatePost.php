@@ -14,8 +14,10 @@ class StoreOrUpdatePost extends StoreOrUpdateModel
     {
         /** @var Post model */
         $this->model = $this->model ?? new Post();
-        $file = FilesHelper::save('posts', Arr::get($this->data, 'photo'));
-        $this->model->setPhotoUrl($file);
+        if(Arr::has($this->data, 'photo')) {
+            $file = FilesHelper::save('posts', Arr::get($this->data, 'photo'));
+            $this->model->setPhotoUrl($file);
+        }
         $this->model->setContent(Arr::get($this->data, 'content'));
         $this->model->user()->associate(auth()->user() ?? 1);
         $this->model->save();
