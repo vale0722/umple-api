@@ -2,12 +2,12 @@
 
 namespace App\Models\Concerns\Repositories;
 
-use App\Actions\Posts\PostActions;
+use App\Actions\Interactions\InteractionActions;
 
 trait PostRepository
 {
-    public static function actions(): PostActions
+    public static function actions(): InteractionActions
     {
-        return new PostActions();
+        return new InteractionActions();
     }
 }

@@ -3,79 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Interaction;
+use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class InteractionController extends Controller
 {
-    public function index(): JsonResponse
+    public function interaction(Request $request, Post $post): JsonResponse
     {
+       $post = Interaction::actions()->storeOrUpdate($request->toArray(), $post);
+
+       return response()->json([
+           'post' => $post
+       ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function comment(Request $request, Post $post): JsonResponse
     {
-        //
-    }
+        $post = Comment::actions()->storeOrUpdate($request->toArray(), $post);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Interaction  $iteraction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Interaction $iteraction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Interaction  $iteraction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Interaction $iteraction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Interaction  $iteraction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Interaction $iteraction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Interaction  $iteraction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Interaction $iteraction)
-    {
-        //
+        return response()->json([
+            'post' => $post
+        ]);
     }
 }
