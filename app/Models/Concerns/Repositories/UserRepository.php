@@ -5,7 +5,6 @@ namespace App\Models\Concerns\Repositories;
 use App\Actions\Interactions\UserActions;
 use App\Models\User;
 use  Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
 
 trait UserRepository
 {
@@ -23,7 +22,7 @@ trait UserRepository
 
     public function scopeFollowersByUser(Builder $query, int $userId): Builder
     {
-        return $query->whereHas('followers', function ($query) use ($userId) {
+        return $query->whereHas('followed', function ($query) use ($userId) {
             $query->where('follower_id', $userId);
         });
     }
