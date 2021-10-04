@@ -10,7 +10,7 @@ class FilesHelper
 {
     public static function save(string $path, File $file): string
     {
-        Storage::disk('public')->put($path, $file);
+        Storage::disk('s3')->put($path, $file);
 
         return  $path . '/' . $file->hashName();
     }
