@@ -20,8 +20,9 @@ class ApiAuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
+
         $request = array_merge($data, [
-            'password' => Hash::make($request['password']),
+            'password' => Hash::make($data['password']),
             'remember_token' => Str::random(10),
             'photo_uri' => FilesHelper::save('users', Arr::get($data, 'photo_uri'))
         ]);
