@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
-class LoginRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            "name" => "required",
+            "email" => "required|string|email|max:100|unique:users",
+            "password" => "required|string|min:6",
+            'photo_uri' => 'required'
         ];
     }
 }

@@ -2,77 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use http\Env\Response;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-use illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function __construct()
+    public function login(LoginRequest $request): JsonResponse
     {
-        $this->middleware('auth:api', ['except' => ['login', "register"]]);
+        $token = auth()->attempt($request->toArray());
+
+        return $token
+            ? $this->respondWithToken($token)
+            : response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    public function login()
-    {
-        $credentials = request(['email', 'password']);
-
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->respondWithToken($token);
-    }
-
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
 
-    public function logout()
+    public function logout(): JsonResponse
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Sesión finalizada exítosamente']);
     }
 
-    public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    protected function respondWithToken($token)
+    protected function respondWithToken($token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 
-    public function register(Request $request)
+    public function refresh(): JsonResponse
     {
-        dd($request);
-        $validator = Validator::make($request->all(), [
-            "name" => "required",
-            "email" => "required|string|email|max:100|unique:users",
-            "password" => "required|string|min:6",
-        ]);
-        if ($validator->failed()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+        return $this->respondWithToken(auth()->refresh());
+    }
 
-        $user = User::create(array_merge(
-            $validator->validate(),
-            ["password" => bcrypt($request->password)]
-        ));
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $user = User::create(array_merge($request->validated(), ['password' => bcrypt($request->get('password'))]));
 
-        return response()->json([
-            "message" => "Usuario registrado exitosamente",
-            "user" => $user
-        ], 201);
+        return response()->json(["message" => "Usuario registrado exitosamente", "user" => $user], 201);
     }
 }
