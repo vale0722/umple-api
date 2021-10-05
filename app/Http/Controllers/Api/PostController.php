@@ -8,6 +8,7 @@ use App\Models\FollowedUserPostView;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -35,6 +36,10 @@ class PostController extends Controller
 
     public function destroy(Post $post): JsonResponse
     {
+        if($post->photo_url) {
+            Storage::disk('s3')->delete($post->photo_url);
+        }
+
         $post->delete();
 
         return response()->json([
