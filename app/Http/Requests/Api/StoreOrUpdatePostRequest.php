@@ -10,7 +10,7 @@ class StoreOrUpdatePostRequest extends FormRequest
     {
         return [
             'photo' => 'sometimes|nullable',
-            'content' => 'sometimes|string|nullable',
+            'content' => 'sometimes|string',
         ];
     }
 }
