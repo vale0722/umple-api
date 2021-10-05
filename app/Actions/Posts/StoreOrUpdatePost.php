@@ -18,7 +18,7 @@ class StoreOrUpdatePost extends StoreOrUpdateModel
             $this->model->setPhotoUrl($file);
         }
         $this->model->setContent(Arr::get($this->data, 'content'));
-        $this->model->user()->associate(auth()->user() ?? 1);
+        $this->model->user()->associate(auth()->user());
         $this->model->save();
 
         return $this;

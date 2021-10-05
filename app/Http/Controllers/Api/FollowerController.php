@@ -14,19 +14,19 @@ class FollowerController extends Controller
 {
     public function indexFollowed(): JsonResponse
     {
-        $followed = User::followedByUser(auth()->id() ?? 1)->orderBy('name')->get();
+        $followed = User::followedByUser(auth()->id())->orderBy('name')->get();
         return response()->json(compact('followed'));
     }
 
     public function indexFollowers(): JsonResponse
     {
-        $followers = User::followersByUser(auth()->id() ?? 1)->orderBy('name')->get();
+        $followers = User::followersByUser(auth()->id())->orderBy('name')->get();
         return response()->json(compact('followers'));
     }
 
     public function indexNotFollowed(): JsonResponse
     {
-        $notFollowed = User::notFollowedByUser(auth()->id() ?? 1)
+        $notFollowed = User::notFollowedByUser(auth()->id())
             ->orderBy('name')
             ->limit(10)
             ->get();
@@ -36,7 +36,7 @@ class FollowerController extends Controller
 
     public function store(User $user): JsonResponse
     {
-        User::actions()->storeFollowed(auth()->user() ?? User::find(1), $user);
+        User::actions()->storeFollowed(auth()->user(), $user);
 
         return response()->json([
             'message' => trans('followed.store_successful')
