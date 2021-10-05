@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\FilesHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,9 +19,11 @@ class ApiAuthController extends Controller
 {
     public function register(RegisterRequest $request): JsonResponse
     {
-        $request = array_merge($request->validated(), [
+        $data = $request->validated();
+        $request = array_merge($data, [
             'password' => Hash::make($request['password']),
-            'remember_token' => Str::random(10)
+            'remember_token' => Str::random(10),
+            'photo_uri' => FilesHelper::save('users', Arr::get($data, 'photo_uri'))
         ]);
 
         $user = User::create($request);
