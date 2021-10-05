@@ -52,8 +52,8 @@ class ApiAuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $token = $request->user()->currentAccessToken();
-        $token->revoke();
+        $request->user()->currentAccessToken()->delete();
+        
         return response()->json(['message' => 'You have been successfully logged out!']);
     }
 
