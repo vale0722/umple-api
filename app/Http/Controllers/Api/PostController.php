@@ -14,7 +14,12 @@ class PostController extends Controller
 {
     public function index(): JsonResponse
     {
-        $posts = FollowedUserPostView::followedPost(1)->orderByDesc('date')->get();
+        try {
+            $posts = FollowedUserPostView::followedPost(1)->orderByDesc('date')->get();
+        } catch (\Throwable $exception) {
+            $posts = [];
+        }
+
         return response()->json(compact('posts'));
     }
 
