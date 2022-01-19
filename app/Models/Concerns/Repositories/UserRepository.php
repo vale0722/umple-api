@@ -4,6 +4,7 @@ namespace App\Models\Concerns\Repositories;
 
 use App\Actions\Interactions\UserActions;
 use App\Models\User;
+use App\Notifications\NewFollower;
 use  Illuminate\Database\Eloquent\Builder;
 
 trait UserRepository
@@ -38,8 +39,10 @@ trait UserRepository
     {
         if ($followedUser = $user->followed()->where('follower_id', $followed->getKey())->first()) {
             $followedUser->followers()->detach($user->getKey());
+            NewFollower::dispatch($user, $followed, true);
         } else {
             $user->followed()->attach($followed->getKey());
+            NewFollower::dispatch($user, $followed);
         }
 
         return $user;

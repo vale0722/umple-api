@@ -45,6 +45,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:200,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'cors'
         ],
     ];
 

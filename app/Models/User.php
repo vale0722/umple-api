@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id') ;
     }
+
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'App.Models.User.' . $this->getKey();
+    }
 }

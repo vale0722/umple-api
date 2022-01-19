@@ -5,6 +5,7 @@ namespace App\Models\Concerns\Repositories;
 use App\Actions\Interactions\CommentActions;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\NewComment;
 use Illuminate\Support\Arr;
 
 trait CommentRepository
@@ -21,6 +22,8 @@ trait CommentRepository
         $model->post_id = $post->getKey();
         $model->user_id = auth()->id() ?? 1;
         $model->save();
+
+        NewComment::dispatch($model);
 
         return $post;
     }

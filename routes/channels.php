@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -15,4 +16,15 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('App.Models.Comments.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id || $user->followed()->find($id);
+});
+
+Broadcast::channel('App.Models.Interactions.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id || $user->followed()->find($id);
+});
+Broadcast::channel('App.Models.Followed.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id || $user->follower()->find($id) || $user->followed()->find($id);
 });
